@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+  <div id="root"></div>
+  <style>
+    #data-table {
+      border-collapse: collapse;
+     
+    }
+
+    #data-table td {
+      border: 1px solid;
+      border-color: black;
+
+    }
+
+
+  </style>
+<script type="text/babel">
+
+    function App() {
+      return (
+        <>
+          <Buton />
+          <Numbers />
+        </>
+      );
+    }
+    function Buton(){
+
+      const [inputValue, setInputValue] = React.useState("");
+      const [result, setResult] = React.useState(null);
+
+
+      async function Ben_cal() {
+        //number = document.getElementById("number").value;
+
+          const response = await fetch('/benford/calculus',{
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                "number": document.getElementById("number").value,
+              })
+
+            });
+
+
+
+
+
+          if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setResult(data.result);
+        console.log('Response from server:', data);
+
+
+      }
+
+
+
+
+      return (
+
+        <div>
+          <h1>React Content Area</h1>
+          <label >Number:</label>
+          <input type="text" id="number" name="fname"></input>
+          <button type="button" onClick={Ben_cal}>Click Me!</button>
+
+
+        </div>
+      );}
+
+    function Numbers()
+    {
+      return (
+        <div>
+
+      <table id="data-table">
+        <caption>Numbers</caption>
+        <thead>
+            <tr>
+                <th scope="col">Header 1</th>
+                <th scope="col">Header 2</th>
+                <th scope="col">Header 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1, Cell 1</td>
+                <td>Row 1, Cell 2</td>
+                <td>Row 1, Cell 3</td>
+            </tr>
+            <tr>
+                <td>Row 2, Cell 1</td>
+                <td>Row 2, Cell 2</td>
+                <td>Row 2, Cell 3</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+      )
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+
+{% endblock %}

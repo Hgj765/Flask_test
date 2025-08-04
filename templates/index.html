@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <div id="root">Loading React...</div>
+
+  <script type="text/babel">
+    function App() {
+      const [message, setMessage] = React.useState("Waiting for Flask...");
+
+      React.useEffect(() => {
+        fetch("/api/message")
+          .then(res => {
+            if (!res.ok) throw new Error("Server error");
+            return res.json();
+          })
+          .then(data => setMessage(data.message))
+          .catch(() => setMessage("⚠️ Cannot reach Flask server."));
+      }, []);
+
+      return (
+        <div>
+          <h1>React Content Area</h1>
+          <p>Flask says: <strong>{message}</strong></p>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+{% endblock %}
