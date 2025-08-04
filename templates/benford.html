@@ -57,9 +57,8 @@
           throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
-        setResult(data.result);
-        console.log('Response from server:', data);
+        document.getElementById("data-table").innerHTML = await response.text();
+        console.log('Response from server:', response);
 
 
       }
@@ -85,7 +84,7 @@
         <div>
 
       <table id="data-table">
-        <caption>Numbers</caption>
+
         <thead>
             <tr>
                 <th scope="col">Header 1</th>
